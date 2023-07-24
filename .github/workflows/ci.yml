@@ -17,6 +17,7 @@ jobs:
           fetch-depth: 0
 
       - name: Install dependencies
+        working-directory: ./server
         run: pip install -r requirements.txt
 
       - name: Check Linter - Python
