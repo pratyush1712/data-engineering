@@ -1,0 +1,42 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* for Chrome, Safari */
+}
+.scrollbar-hide {
+  -ms-overflow-style: none; /* for Internet Explorer, Edge */
+  scrollbar-width: none; /* for Firefox */
+}
+
+:root {
+  --foreground-rgb: 255, 255, 255; /* Set foreground (text color) to white */
+  --background-start-rgb: 255, 255, 255; /* Set start of background gradient to white */
+  --background-end-rgb: 255, 200, 200; /* Set end of background gradient to red */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 0, 0, 0; /* Set foreground (text color) to black */
+    --background-start-rgb: 0, 0, 0; /* Set start of background gradient to white */
+    --background-end-rgb: 255, 200, 200; /* Set end of background gradient to red */
+  }
+}
+
+@font-face {
+  font-family: "CEI"; /* This is the name you'll use to refer to the font in your CSS */
+  src: url("assets/font.ttf"); /* Replace with the actual path to your font file */
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  font-family: "CEI";
+  background: radial-gradient(
+    circle farthest-corner at center,
+    rgb(var(--background-end-rgb)) 40%,
+    rgb(var(--background-start-rgb)) 100%
+  );
+}
