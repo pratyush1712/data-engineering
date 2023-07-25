@@ -1,4 +1,4 @@
-import { CompanyData } from "./company";
+import { CompanyData } from './company';
 
 export type ExcelRow = CompanyData;
 
