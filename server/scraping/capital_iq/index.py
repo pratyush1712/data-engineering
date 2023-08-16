@@ -14,7 +14,10 @@ from selenium.webdriver.support import expected_conditions as EC
 from multiprocessing import Pool, cpu_count, Manager
 
 if __name__ != "__main__":
-    from scraping.utils import cornell_login, similarity
+    if os.environ.get("FLASK_ENV", "development") == "production":
+        from scraping.utils import cornell_login, similarity
+    else:
+        from utils import cornell_login, similarity
 else:
     sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     from utils import cornell_login, similarity
@@ -239,7 +242,7 @@ def main(file_path, output_file_path):
         companies = json.load(f)
 
     for company in companies:
-        if "Ticker" not in company:
+        if "Ticker" not in company or company["Ticker"] == "-":
             process_search_results(driver, company)
             with open(output_file_path, "w") as f:
                 json.dump(companies, f, indent=4)

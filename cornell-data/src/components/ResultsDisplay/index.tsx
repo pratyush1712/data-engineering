@@ -8,7 +8,10 @@ interface Props {
     workbook: CompanyData[];
 }
 
+type Companies = Record<string, CompanyData>;
+
 const MainComponent: React.FC<Props> = ({ category, workbook }) => {
+    const [companies, setCompanies] = useState<Companies>({});
     const [duns, setDuns] = useState<CompanyData[]>([]);
     const [ein, setEin] = useState<CompanyData[]>([]);
     const [ticker, setTicker] = useState<CompanyData[]>([]);
@@ -18,7 +21,7 @@ const MainComponent: React.FC<Props> = ({ category, workbook }) => {
 
         const fetchData = async () => {
             try {
-                const response = await fetch('https://cie-scraper.fly.dev/api/companies', {
+                const response = await fetch('http://localhost:5001/api/companies', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ companies: workbook })
@@ -30,9 +33,14 @@ const MainComponent: React.FC<Props> = ({ category, workbook }) => {
                     const { value, done } = await reader.read();
                     if (done) break;
                     const data = JSON.parse(value);
-                    if (data['D-U-N-S']) setDuns((duns) => [...duns, data]);
-                    if (data.EIN) setEin((ein) => [...ein, data]);
-                    if (data.Ticker) setTicker((ticker) => [...ticker, data]);
+                    if (data['D-U-N-S'] && (!companies[data.Company] || !companies[data.Company]['D-U-N-S'])) {
+                        setDuns((duns) => [...duns, data]);
+                    } else if (data.EIN && (!companies[data.Company] || !companies[data.Company].EIN)) {
+                        setEin((ein) => [...ein, data]);
+                    } else if (data.Ticker && (!companies[data.Company] || !companies[data.Company].Ticker)) {
+                        setTicker((ticker) => [...ticker, data]);
+                    }
+                    setCompanies((companies) => ({ ...companies, [data.Company]: data }));
                 }
             } catch (error) {
                 if (axios.isCancel(error)) console.log('Request cancelled');

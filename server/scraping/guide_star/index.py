@@ -12,7 +12,10 @@ from selenium.webdriver.support import expected_conditions as EC
 from multiprocessing import Pool, cpu_count, Manager
 
 if __name__ != "__main__":
-    from scraping.utils import cornell_login, similarity
+    if os.environ.get("FLASK_ENV", "development") == "production":
+        from scraping.utils import cornell_login, similarity
+    else:
+        from utils import cornell_login, similarity
 else:
     import sys
 

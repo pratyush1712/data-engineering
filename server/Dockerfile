@@ -30,6 +30,8 @@ RUN apt-get update && apt-get install -y \
 
 RUN apt-get install chromium -y
 
+RUN python -c "import nltk; nltk.download('stopwords')"
+COPY . /app/
 # Set display port to avoid crash
 ENV DISPLAY=:99
 
@@ -38,6 +40,7 @@ EXPOSE 5000
 
 # Define environment variable
 ENV NAME World
+ENV env production
 
 # Run app.py when the container launches
 CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 app:app

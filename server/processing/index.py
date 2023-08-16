@@ -58,10 +58,7 @@ def merge_data(company_type):
     for file in files:
         folder = f"{DATA_PATH}/{file}"
         try:
-            with open(
-                f"{folder}/{company_type}.json",
-                "r",
-            ) as f:
+            with open(f"{folder}/{company_type}.json", "r") as f:
                 data[file] = json.load(f)
         except FileNotFoundError:
             print(f"File {file}_{company_type}.json not found.")

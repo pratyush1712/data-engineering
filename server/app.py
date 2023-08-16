@@ -1,17 +1,23 @@
+import os
+
+os.environ["FLASK_ENV"] = "production"
 import json
 from flask import Flask, request, Response
 from flask_cors import CORS
-
-from selenium import webdriver
-import concurrent.futures
-from concurrent.futures import ThreadPoolExecutor
 
 from scraping.capital_iq.index import process_search_results as get_ticker
 from scraping.mergent_intellect.index import process_search_results as get_duns
 from scraping.guide_star.index import process_search_results as get_ein
 
+from selenium import webdriver
+import concurrent.futures
+from concurrent.futures import ThreadPoolExecutor
+
 app = Flask(__name__)
-cors = CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})
+cors = CORS(
+    app,
+    resources={r"/api/*": {"origins": "*", "supports_credentials": True}},
+)
 
 
 def init_webdriver():
